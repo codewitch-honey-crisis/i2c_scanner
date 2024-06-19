@@ -1,9 +1,13 @@
 #define I2C_MASTER_NUM I2C_NUM_0 /*!< I2C port number for master dev */
-#define I2C_MASTER_SCL_IO 18     
-#define I2C_MASTER_SDA_IO 17
-#define I2C Wire
-#define I2C_SDA 17
-#define I2C_SCL 18
+#define I2C_MASTER_SDA_IO 21
+#define I2C_MASTER_SCL_IO 22
+#define I2C Wire1
+#define I2C_SDA 21
+#define I2C_SCL 22
+#ifdef M5STACK_CORE2
+#include <m5core2_power.hpp>
+m5core2_power power;
+#endif
 #include "driver/i2c.h"
 // ESP32 I2C Scanner
 // Based on code of Nick Gammon  http://www.gammon.com.au/forum/?id=10896
@@ -55,9 +59,12 @@ void update_task(void* state) {
 }
 void setup() {
     Serial.begin(115200);
+#ifdef M5STACK_CORE2
+    power.initialize();
+#endif
     Serial.println("Starting");
-    pinMode(21,OUTPUT);
-    digitalWrite(21,HIGH);
+    //pinMode(21,OUTPUT);
+    //digitalWrite(21,HIGH);
     memset(&i2c_addresses_old,0,sizeof(i2c_addresses_old));
     memset(&i2c_addresses,0,sizeof(i2c_addresses));
     updater_ran = false;
